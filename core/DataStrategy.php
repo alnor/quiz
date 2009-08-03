@@ -64,7 +64,7 @@ abstract class DataStrategy
    * @abstract
    * @access public
    */
-  abstract public function delete( $id );
+  abstract public function delete( );
 
 
   /**

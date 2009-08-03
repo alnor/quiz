@@ -65,8 +65,8 @@ abstract class QuizData extends \core\DataStrategy
    * @access public
    */
   public function save( $params ) {
-    $query = "INSERT INTO quiz SET text = ?";
-    $this->db->execute( $query, array($params['text']) );
+    $query = "INSERT INTO quiz SET text = ?, type=?";
+    $this->db->execute( $query, array($params['text'], $this->type) );
     return $this->db->getLastId();
   } // end of member function save
 
@@ -133,18 +133,15 @@ abstract class QuizData extends \core\DataStrategy
   	return $this->db->execute( $query, $values ); 
   } // end of member function update
 
-  /**
-   * 
-   *
-   * @param int id 
-
-   * @return 
-   * @access public
-   */
-  public function delete( $id ) {
-    $query = "DELETE FROM quiz WHERE id=?";
-    return $this->db->execute( $query, array($id) );  	
-  } // end of member function delete
+	  /**
+	   * 
+	   * @return 
+	   * @access public
+	   */
+	  public function delete( ) {
+	    $query = "DELETE FROM quiz WHERE id=?";
+	    return $this->db->execute( $query, array($this->id) );  	
+	  } // end of member function delete
 
 
 	/**

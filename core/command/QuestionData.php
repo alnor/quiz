@@ -192,9 +192,9 @@ class QuestionData extends \core\DataStrategy
    * @return 
    * @access public
    */
-  public function delete( $id ) {
+  public function delete( ) {
     $query = "DELETE FROM questions WHERE id=?";
-    return $this->db->execute( $query, array($id) );  	
+    return $this->db->execute( $query, array($this->id) );  	
   } // end of member function delete	
 
 

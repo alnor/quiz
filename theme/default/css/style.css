@@ -17,9 +17,10 @@ h3 {
 input.qn{
 	width:400px;
 }	
-.header h1{
+.header h1 a{
 	color: red;
 	font-size:46px;
+	text-decoration:none;
 }
 .quizBox{
 	margin:20px 0 20px 0;
@@ -87,6 +88,13 @@ button#addAnswer{
 }
 .error{
 	border: 1px solid red;
+	border-radius: 5px;	
+	background-color: white;
+	padding:10px;
+	margin:10px 0 10px 0;
+}
+.message{
+	border: 1px solid green;
 	border-radius: 5px;	
 	background-color: white;
 	padding:10px;

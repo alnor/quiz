@@ -16,12 +16,7 @@ class MainController extends \core\Common
 	/** Compositions: */
 
 	 /*** Attributes: ***/
-	
-	/**
-	 * 
-	 * @access private
-	 */
-	private $error=array();	
+
 	
 	function index(){	
 	}
@@ -54,6 +49,44 @@ class MainController extends \core\Common
 
 	}
 	
+	function result(){			
+		
+		$qarr=array();
+
+		if (empty($this->form)){
+			$this->form = \core\Registry::getRequest()->form();
+		}	
+		
+		if ($this->form){
+			switch($this->form["type"]){
+				case "active":
+					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
+					break;
+				case "draft":
+					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+					break;
+				case "closed":
+					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
+					break;										
+			}
+			
+			$questionObj = new \core\command\QuestionData();
+			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
+
+			$ansObj = new \core\command\AnswerData();
+			foreach($questions as $key=>$question){
+				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
+			}
+			
+			$result = array("quiz"=>$quizObj, "data"=>$qarr);
+			
+			$this->setBlankTheme();			
+			$this->set("result", $result);
+		}		
+		
+		return false;
+	}		
+	
 	function make(){								
 		
 		$this->form = \core\Registry::getRequest()->form();
@@ -62,12 +95,38 @@ class MainController extends \core\Common
 			$quizObj = new \core\command\data\ActiveQuiz($this->form["quiz"]);
 			$quizObj->update(array("id"=>$this->form["quiz"]), array("count"=>$quizObj->getCount()+1));
 			
-			foreach($this->form["ans"] as $questionId=>$value){
-				$ansObj = new \core\command\AnswerData($value);
-				$ansObj->update(array("id"=>$value), array("count"=>$ansObj->getCount()+1));
+			foreach($this->form["required"] as $questionId=>$value){				
+				if ($value && !($this->form["ans"][$questionId])){
+					$this->error[] = "You need to answer the mandatory questions";
+				}				
 			}
+			
+			foreach($this->form["ans"] as $questionId=>$value){		
+
+				if (!is_array($value)){
+					$value = array($value);
+				}
+				
+				foreach($value as $k=>$v){
+					$ansObj = new \core\command\AnswerData($v);
+					$ansObj->update(array("id"=>$v), array("count"=>$ansObj->getCount()+1));
+				}
+			}
+			
+			if (!empty($this->error)){
+				$this->setView("error", false);
+				$this->setBlankTheme();
+				$this->set("error", $this->error);
+				return;
+			}		
+
+			$this->form["id"] = $this->form["quiz"];
+			$this->form["type"] = "active";		
+			$this->setView("result", false);
+			$this->result();			
+			
 		}
-		$this->setView("/admin/result", false);
+
 	}	
 
 	

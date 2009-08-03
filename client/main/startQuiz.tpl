@@ -2,7 +2,7 @@
 	if ($this->var["has_active"]){
 
 		echo "<h2>".$this->var["result"]["quiz"]["text"]."</h2>";
-		echo "<form method='post' action='/main/make'>";
+		echo "<form method='post' id='quizUpd'>";
 		echo "<input type='hidden' name='quiz' value='".$this->var["result"]["quiz"]["id"]."'>";
 		echo "<hr />";
 		foreach($this->var["result"]["data"] as $key=>$data){
@@ -14,6 +14,7 @@
 			}
 			
 			echo "<h3>".$required." ".($key+1).") ".$data["question"]["text"]."</h3>";
+			echo "<input type='hidden' name='required[".$data["question"]["id"]."]' value='".$data["question"]["required"]."'>";
 			echo "<div class='wb_main'>";
 			foreach($data["answers"] as $answer){
 				
@@ -24,7 +25,7 @@
 						echo "<div class='inputBlock'><input type='radio' name='ans[".$data["question"]["id"]."]' value='".$answer["id"]."' /></div>";
 						break;
 					case 2:
-						echo "<div class='inputBlock'><input type='checkbox' name='ans[".$data["question"]["id"]."]' value='".$answer["id"]."' /></div>";
+						echo "<div class='inputBlock'><input type='checkbox' name='ans[".$data["question"]["id"]."][]' value='".$answer["id"]."' /></div>";
 						break;					
 				}
 				
@@ -33,8 +34,10 @@
 			}
 			echo "</div>";			
 		}
-		echo "<hr />";	
+	
+		echo "<div class='buttonPlace'>";
 		echo "<input type='submit' value='Done' />";
+		echo "</div>";
 		echo "</form>";
 	} else {
 		echo "<h3>No active quiz</h3>";

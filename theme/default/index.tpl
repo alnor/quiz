@@ -15,7 +15,7 @@
 <body>
 	<div class="page">
 		<div class="header">
-			<h1>QuiZ</h1>
+			<h1><a href="/">QuiZ</a></h1>
 		</div>
 		
 		

@@ -20,7 +20,14 @@ class Common
 	 * 
 	 * @access protected
 	 */
-	protected $form=array();	
+	protected $form=array();
+
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $error=array();		
 		
 	/**
 	 * 

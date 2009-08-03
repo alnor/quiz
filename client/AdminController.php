@@ -15,13 +15,7 @@ class AdminController extends \core\Common
 
 	/** Compositions: */
 
-	 /*** Attributes: ***/
-	
-	/**
-	 * 
-	 * @access private
-	 */
-	private $error=array();		
+	 /*** Attributes: ***/	
 
 
 	function quiz(){								
@@ -69,30 +63,70 @@ class AdminController extends \core\Common
 			}	
 			
 			$quizObj = new \core\command\data\ActiveQuiz();
+			$active_quiz = $quizObj->find();
+
+			if (!empty($active_quiz)){
+				$quizObj = new \core\command\data\DraftQuiz();
+			}
+			
 			$quizid = $quizObj->save($this->form["quiz"]);
 
 			foreach($this->form["question"] as $key=>$question){
+				
 				$question["quiz_id"] = $quizid;
+				
+				if (!$question["required"]){
+					$question["required"]=0;
+				}
+
 				$questionObj = new \core\command\QuestionData();
 				$questionid = $questionObj->save($question);
-				
+
 				foreach($this->form["answer"][$key] as $k=>$answer){
 					$answer["question_id"] = $questionid;
 					$answerObj = new \core\command\AnswerData();
 					$answerid = $answerObj->save($answer);					
 				}
 			}
-
-			//$this->redirect("/admin/result");
+			
+			$this->form["id"] = $quizid;
+			$this->form["type"] = "active";
+			$this->setView("result", false);
+			$this->result();
 		}			
 
+	}
+	
+	function edit(){
+		//$id = \core\Registry::getRequest()->getParam("id");
+		
+		$this->form = \core\Registry::getRequest()->form();
+		
+		if ($this->form){
+			$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+			
+			$questionObj = new \core\command\QuestionData();
+			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
+
+			$ansObj = new \core\command\AnswerData();
+			foreach($questions as $key=>$question){
+				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
+			}
+			
+			$result = array("quiz"=>$quizObj, "data"=>$qarr);	
+
+			$this->setBlankTheme();			
+			$this->set("result", $result);			
+		}
 	}
 	
 	function result(){			
 		
 		$qarr=array();
-		
-		$this->form = \core\Registry::getRequest()->form();
+
+		if (empty($this->form)){
+			$this->form = \core\Registry::getRequest()->form();
+		}	
 		
 		if ($this->form){
 			switch($this->form["type"]){
@@ -142,7 +176,9 @@ class AdminController extends \core\Common
 
 		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>3));
 		
-		print("Quiz successfully closed");
+		$this->setBlankTheme();	
+		$this->setView("quiz", false);
+		$this->quiz();
 	}	
 	
 	function activate(){
@@ -163,7 +199,9 @@ class AdminController extends \core\Common
 
 		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>1));
 		
-		print("Quiz successfully activate");
+		$this->setBlankTheme();	
+		$this->setView("quiz", false);
+		$this->quiz();
 	}		
 	
 	function delete(){
@@ -175,9 +213,21 @@ class AdminController extends \core\Common
 					$quizObj = new \core\command\data\ActiveQuiz($form["id"]);
 					$quizObj->delete();
 					break;
+				case "draft":
+					$quizObj = new \core\command\data\DraftQuiz($form["id"]);
+					$quizObj->delete();
+					break;
+				case "closed":
+					$quizObj = new \core\command\data\ClosedQuiz($form["id"]);
+					$quizObj->delete();
+					break;										
 			}
 		}
-		print("Quiz successfully deleted");
+		
+		$this->setBlankTheme();	
+		$this->setView("quiz", false);
+		$this->quiz();
+
 	}	
 	
 	private function validateQuizFields( ){

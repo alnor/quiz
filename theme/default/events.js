@@ -32,12 +32,37 @@ $(function(){
 			type: "POST",
 			data: $(this).serialize(),
 			success: function(html){  
-			    $("#ajaxContext").html(html);  
+				if (html.search('<div class="error">')!=-1){
+					$("#ajaxContext").html(html);
+				} else {
+					$("#ajaxContext").html("<div class='message'>Quiz successfuly created!</div>").fader(); 
+					$(".content").html(html);
+				}
+			      
 			}  
 		});
 		
 		return false;
 	});
+	
+	$("#quizUpd").bind("submit", function(event){
+		$.ajax({
+			url: "/main/make",
+			type: "POST",
+			data: $(this).serialize(),
+			success: function(html){  
+				if (html.search('<div class="error">')!=-1){
+					$("#ajaxContext").html(html);
+				} else {
+					$("#ajaxContext").empty();
+					$(".content").html(html);
+				}
+			      
+			}  
+		});
+		
+		return false;
+	});	
 	
 	$("#showResultsQuiz").live("click", function(event){
 		
@@ -69,7 +94,8 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html(html);  
+			    $("#ajaxContext").html("<div class='message'>Quiz successfuly closed!</div>").fader(); 
+			    $(".content").html(html);
 			}  
 		});
 	});	
@@ -84,7 +110,8 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html(html);  
+			    $("#ajaxContext").html("<div class='message'>Quiz successfuly deleted!</div>").fader();   
+			    $(".content").html(html); 
 			}  
 		});
 	});	
@@ -99,8 +126,28 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html(html);  
+			    $("#ajaxContext").html("<div class='message'>Quiz successfuly activated!</div>").fader();  
+			    $(".content").html(html);
+			}  
+		});
+	});	
+	
+	$("#editQuiz").live("click", function(event){
+		
+		var id=$(this).attr("data-id");
+		var type=$(this).closest("table").attr("data-type");
+		
+		$.ajax({
+			url: "/admin/edit",
+			type: "POST",
+			data: {id: id, type: type},
+			success: function(html){   
+			    $(".content").html(html);
 			}  
 		});
 	});	
 });
+
+$.fn.fader = function(){
+	return $(this).fadeOut(4000, function(){$(this).empty().show()});
+}
