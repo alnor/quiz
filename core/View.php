@@ -84,8 +84,10 @@ class View
 	 */
 	public function __construct( $tpl ) {
 		
-		\core\Registry::setView( $this );
+		//\core\Registry::setView( $this );
 		$this->tpl	= $tpl;
+		$this->defaultTemplate		= $tpl;	
+		$this->setThemeTag();
 	} // end of member function __construct
 
 
@@ -112,6 +114,10 @@ class View
 		foreach($this->tag as $key=>$value){
 			$output = str_replace($key, $value, $output);
 		}
+		
+		if ($yieldTemplate){	
+			$this->setDefaultTemplate();
+		}			
 
 		return $output;
 	} // end of member function render
@@ -145,11 +151,11 @@ class View
 	public function loadTheme( ) {
 		ob_start();
 		
-		if (!file_exists(SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl")){
+		if (!file_exists(DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl")){
 			throw new \core\Smrt_Exception("No theme");
 		}		
 		
-		require SMRT_DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
+		require DOCUMENT_ROOT."/theme/".$this->themeFolder."/".$this->themeName.".tpl";
 		
 		$this->theme =ob_get_contents();
 		ob_end_clean();	
@@ -200,7 +206,7 @@ class View
 	 * @access public
 	 */
 	public function setView( $tpl ) {
-		$view = SMRT_APP_PATH."/views/".(\core\Smrt_Registry::getParam("controller"))."/".$tpl.".tpl";		
+		$view = APP_PATH."/".(\core\Registry::getParam("controller"))."/".$tpl.".tpl";		
 		$this->tpl = $view;
 	} // end of member function setView
 	

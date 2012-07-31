@@ -6,7 +6,7 @@ namespace core\db;
  * class MySQL
  * 
  */
-class MySQL
+class MySQL extends DB
 {
 
 	/** Aggregations: */
@@ -21,23 +21,18 @@ class MySQL
 	 */
 	private $db;	
 	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $lastid;	
+	
 	
 	function __construct($db){
 		$dsn 		= $db["driver"].":dbname=".$db["database"].";host=".$db["host"];
 		$this->db 	= new \PDO($dsn, $db["login"], $db["password"]);
 		$this->db->exec('SET NAMES utf8');		
 	}
-
-
-	function saveQuiz($param){	
-		$query = "INSERT INTO quiz SET text = '?')";
-		return $this->execute( $query, array($param['text']) );
-	}
-	
-	function findQuiz($id){	
-		$query = "SELECT * FROM quiz WHERE id = ?)";
-		return $this->execute( $query, array($id) );
-	}	
 	
 	/**
 	 * 
@@ -58,8 +53,11 @@ class MySQL
 			
 		}
 		
-		return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+		$result = $stmt->fetchAll( \PDO::FETCH_ASSOC );
 		
+		$this->lastid = $result;
+		
+		return $result;
 	} // end of member function execute		
 
 
@@ -70,7 +68,11 @@ class MySQL
 	 * @access public
 	 */
 	public function getLastId( ) {
+		if ($this->lastid){
+			return $this->lastid;
+		}
 		
+		return false;
 	} // end of member function getLastId	
 
 } // end of MySQL

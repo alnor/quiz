@@ -89,18 +89,21 @@ class AppController
 			if (!file_exists($filepath)){
 				throw new \core\QuizException("error path");
 			}
-			
+
 			require_once($filepath);
-			
+
 			if (!class_exists($class)){
 				throw new \core\QuizException("error class");
 			}
 			
-			$this->controller = new $class();
 			$action = $request->getParam("action");
-			//SMRT_APP_PATH."/views/".$controller."/".$action.".tpl";
-
-			print($this->controller->$action());
+			
+			$tpl = APP_PATH."/".$request->getParam("controller")."/".$action.".tpl";
+			$view = new \core\View( $tpl );
+			
+			$this->controller = new $class( $view );
+			
+			print($this->invoke());
 			
 		}catch(\core\QuizException $e){
 

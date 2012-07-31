@@ -33,6 +33,18 @@ abstract class Quiz
 	 * @access private
 	 */
 	private $text;
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $driver;	
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $db;	
 
 
 	/**
@@ -46,13 +58,17 @@ abstract class Quiz
 	 * @access public
 	 */
 	public function __construct( $text = null,  $id = null ) {
+		
+		$this->driver = \core\Registry::getConnection();
+		$this->db = new \core\QuizData($this->driver);
+				
 		if (!is_null($id)){
 			$this->init($id);
 		}
 
-		$this->db = \core\Registry::getConnection();
-					
-		$this->text = $text;
+		if (!is_null($text)){
+			$this->text = $text;
+		}
 	} // end of member function __construct
 
 	/**
@@ -136,8 +152,8 @@ abstract class Quiz
 	 * @access public
 	 */
 	public function save( $params ) {
-		$this->db->saveQuiz($params["quiz"]);
-		$this->db->saveQuestion($params["question"], $this->db->getLastId());
+		$this->db->save($params);
+		return $this->db->getLastId();
 	} // end of member function save	
 
 
@@ -151,7 +167,7 @@ abstract class Quiz
 	 * @access private
 	 */
 	private function init( $id ) {
-		$quiz = $this->db->findQuiz($id);
+		$quiz = $this->db->find($id);
 		$this->text = $quiz["text"];
 		$questions = $this->db->findQuestions($id);
 		$this->setQuestions($questions);

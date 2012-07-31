@@ -134,6 +134,17 @@ class Registry
 	public static function getFormParam( $key ) {
 		return self::getInstance()->get("request")->getFormParam( $key );
 	} // end of member function getRequest	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @static
+	 * @access public
+	 */
+	public static function getParam( $key ) {
+		return self::getInstance()->get("request")->getParam( $key );
+	} // end of member function getRequest		
 		
 	/**
 	 * 
