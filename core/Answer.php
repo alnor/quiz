@@ -32,8 +32,8 @@ class Answer
 			$this->init($id);
 		}
 		
-		if (!is_null($name)){
-			$this->name = $name;
+		if (!is_null($text)){
+			$this->text = $text;
 		}
 	} // end of member function __construct
 

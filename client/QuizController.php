@@ -16,6 +16,12 @@ class QuizController
 	/** Compositions: */
 
 	 /*** Attributes: ***/
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $error=array();	
 
 
 	function index(){								
@@ -50,6 +56,28 @@ HTML;
 	
 	function create(){								
 		$form = \core\Registry::getRequest()->form();
+		print_r($form);
+		try{
+			if (!$form["quiz"]["text"]){
+				$this->error[] = "Quiz name needed";
+			}
+			
+			if (!$form["question"]){
+				$this->error[] = "Question name needed";
+			}
+
+			if (count($form["question"])==1){
+				if (!$form["question"]["text"]){
+					$this->error[] = "Question name needed";
+				}	
+			}		
+			
+			if (!empty($this->error)){
+				throw new \core\QuizException("Error");
+			}
+		} catch(\core\QuizException $e) {
+			print_r($this->error);
+		}
 
 		if ($form){
 			$quizObj = new \core\quiz\ActiveQuiz($form["quiz"]["text"]);
