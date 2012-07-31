@@ -30,9 +30,14 @@ class MySQL
 
 
 	function saveQuiz($param){	
-		$query = "INSERT INTO quiz(text) VALUES(?)";
+		$query = "INSERT INTO quiz SET text = '?')";
 		return $this->execute( $query, array($param['text']) );
 	}
+	
+	function findQuiz($id){	
+		$query = "SELECT * FROM quiz WHERE id = ?)";
+		return $this->execute( $query, array($id) );
+	}	
 	
 	/**
 	 * 

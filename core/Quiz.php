@@ -90,6 +90,18 @@ abstract class Quiz
 	public function setType( $type ) {
 		$this->type = $type;
 	} // end of member function setType
+	
+	/**
+	 * 
+	 *
+	 * @param int type 
+
+	 * @return 
+	 * @access public
+	 */
+	public function getText( ) {
+		return $this->text;
+	} // end of member function setType	
 
 	/**
 	 * 
@@ -140,6 +152,7 @@ abstract class Quiz
 	 */
 	private function init( $id ) {
 		$quiz = $this->db->findQuiz($id);
+		$this->text = $quiz["text"];
 		$questions = $this->db->findQuestions($id);
 		$this->setQuestions($questions);
 	} // end of member function init

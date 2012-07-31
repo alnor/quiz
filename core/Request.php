@@ -105,5 +105,5 @@ class Request
 
 
 
-} // end of Smrt_Request
+} // end of Request
 ?>

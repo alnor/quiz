@@ -25,7 +25,8 @@ class QuizController
 
 
 	function index(){								
-		print "Ok";
+		$activeQuiz = new \core\quiz\ActiveQuiz(\core\Registry::getRequest()->getParam("id"));
+		print_r($activeQuiz->getText());
 	}
 	
 	/**
