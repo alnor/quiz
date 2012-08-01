@@ -102,7 +102,7 @@ class AdminController extends \core\Common
 	
 	function close(){
 		$form = \core\Registry::getRequest()->form();						
-		print($form["id"]);
+		print("Quiz successfully closed");
 	}	
 	
 	function delete(){
@@ -116,7 +116,7 @@ class AdminController extends \core\Common
 					break;
 			}
 		}
-		print($form["id"]);
+		print("Quiz successfully deleted");
 	}	
 	
 	private function validateQuizFields( ){
