@@ -1,5 +1,7 @@
 <form method="post" id="formQuiz">
-	Quiz name: <input type="text" name="quiz[text]" />
+	<div class="quizBox">
+		<h3>Quiz name:</h3> <input type="text" name="quiz[text]" class="qn"/>
+	</div>
 	<div class="questionBox">
 		<div class="questionSubBox">
 			Question #1: <input type="text" name="question[1][text]" />

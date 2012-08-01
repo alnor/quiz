@@ -3,12 +3,12 @@
 namespace client;
 
 /**
- * class AdminController
+ * class MainController
  * 
  */
 
 
-class AdminController extends \core\Common
+class MainController extends \core\Common
 {
 
 	/** Aggregations: */
@@ -24,57 +24,11 @@ class AdminController extends \core\Common
 	private $error=array();	
 
 
-	function quiz(){								
-		$activeQuiz = new \core\quiz\ActiveQuiz(\core\Registry::getRequest()->getParam("id"));
+	function startQuiz(){								
+		$activeQuizObj = new \core\quiz\ActiveQuiz();
+		$activeQuiz = $activeQuizObj->getQuiz();
 	}
+
 	
-	/**
-	 * 
-	 * Adding quiz
-	 */
-	
-	function add(){	
-
-		$form = \core\Registry::getRequest()->form();
-		
-		if ($form){
-
-			if (!$form["quiz"]["text"]){
-				$this->error[] = "Quiz name needed";
-			}
-			
-			foreach($form["question"] as $key=>$val){
-				if (empty($val["text"])){
-					unset($form["question"][$key]);
-				}
-			}
-
-			if (empty($form["question"])){
-				$this->error[] = "Question name needed";	
-			}		
-
-			if (!empty($this->error)){
-				$this->setView("error", false);
-				$this->setBlankTheme();
-				$this->set("error", $this->error);
-				return;
-			}	
-			
-			$quizObj = new \core\quiz\ActiveQuiz($form["quiz"]["text"]);
-			$quizId = $quizObj->save($form["quiz"]);
-			echo $quizid;	
-
-			foreach($form["question"] as $key=>$val){
-				$questionObj = new \core\Question($form["question"]["text"]);
-				$questionId = $quizObj->save($form["quiz"]);
-			}			
-		}			
-
-	}
-	
-	function result(){								
-	
-	}	
-	
-} // end of QuizController
+} // end of MainController
 ?>
