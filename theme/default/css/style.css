@@ -1,0 +1,93 @@
+body{
+	font: 14px Arial;
+}	
+.page{
+	margin: 0 auto 0 auto;
+	width:1004px;
+}	
+.questionSubBox{
+	border: 1px solid silver;
+	border-radius: 10px;
+	padding:10px 10px 10px 20px;
+	margin:5px;
+}	
+.answerBox{
+	border: 1px solid gray;
+	border-radius: 10px;
+	padding:10px;
+	/*margin-left:20px;*/
+	width:400px;
+}
+
+button{
+	border: 1px solid silver;
+	border-radius: 5px;	
+}
+input{
+	border: 1px solid silver;
+	border-radius: 4px;		
+}	
+button#addAnswer{
+	margin:5px 2px 0 0px;
+}
+.buttonPlace{
+	border: 1px solid silver;
+	border-radius: 5px;	
+	background-color: silver;
+	padding:10px;
+}
+.buttonPlace button, .buttonPlace input{
+	border: 2px solid white;
+}
+.menu{
+	border: 1px solid silver;
+	border-radius: 5px;	
+	background-color: silver;	
+	margin:5px 0 5px 0;	
+}	
+.menu ul{
+	padding:0;
+	margin:0;
+	overflow:hidden;
+}
+.menu li{
+	list-style-type:none;
+	float:left;
+	margin:0;
+	padding:5px 10px 5px 10px;
+	overflow:hidden;
+}
+.menu li:hover{
+	background-color:gray;
+}	
+.menu a:link, .menu a:visited{
+	color:white;
+}
+.menu a:hover{
+	text-decoration:none;
+}
+.error{
+	border: 1px solid red;
+	border-radius: 5px;	
+	background-color: white;
+	padding:10px;
+	margin:10px 0 10px 0;
+}
+.tbl{
+	width:100%;
+}
+.tbl th, .tbl td{
+	border: 1px solid silver;
+	/*border-right: 1px solid silver;*/
+	border-radius: 5px;	
+	padding:2px 3px 2px 3px;
+	margin:1px;
+	text-align:center;
+}
+.tbl th {
+	background-color: gray;
+	color: white;
+}
+.tbl td.but{
+	text-align:left;	
+}

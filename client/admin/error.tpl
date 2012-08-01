@@ -1,4 +1,4 @@
-	
+<div class="error">	
 	<?php 
 		if ($this->var["error"]){
 			echo "You have some errors: <br />";
@@ -9,3 +9,4 @@
 			echo "</ul>";			
 		}
 	?>
+</div>	

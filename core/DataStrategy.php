@@ -42,7 +42,7 @@ abstract class DataStrategy
    * @abstract
    * @access public
    */
-  abstract public function find( $id = null );
+  abstract public function find( $type, $id = null );
 
   /**
    * 

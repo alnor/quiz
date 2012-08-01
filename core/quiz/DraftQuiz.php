@@ -1,11 +1,12 @@
-require_once 'Quiz.php';
+<?php
 
+namespace core\quiz;
 
 /**
  * class DraftQuiz
  * 
  */
-class DraftQuiz extends Quiz
+class DraftQuiz extends \core\Quiz
 {
 
 	/** Aggregations: */
@@ -21,7 +22,8 @@ class DraftQuiz extends Quiz
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( ) {
+	public function __construct( $text = null,  $id = null ) {
+		parent::__construct( $text,  $id );
 		$this->type=2;
 	} // end of member function __construct
 

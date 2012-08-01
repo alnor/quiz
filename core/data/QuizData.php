@@ -38,7 +38,7 @@ class QuizData extends \core\DataStrategy
    * @access public
    */
   public function save( $params ) {
-    $query = "INSERT INTO quiz SET text = '?'";
+    $query = "INSERT INTO quiz SET text = ?";
     return $this->db->execute( $query, array($params['text']) );
   } // end of member function save
 
@@ -50,7 +50,19 @@ class QuizData extends \core\DataStrategy
    * @return 
    * @access public
    */
-  public function find( $id = null ) {
+  public function find( $type, $id = null ) {
+  	
+  	$values=array();
+  	
+  	$cond = "WHERE type=?";
+  	$values[] = $type;
+  	
+  	if (!is_null($id)){
+  		$cond .= " AND id=? ";
+  		$values[]=$id;
+  	}
+    $query = "SELECT * FROM quiz ";
+    return $this->db->execute( $query, $values );  	
   } // end of member function find
 
   /**
@@ -73,6 +85,8 @@ class QuizData extends \core\DataStrategy
    * @access public
    */
   public function delete( $id ) {
+    $query = "DELETE FROM quiz WHERE id=?";
+    return $this->db->execute( $query, array($id) );  	
   } // end of member function delete
 
 

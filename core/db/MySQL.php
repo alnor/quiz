@@ -54,7 +54,7 @@ class MySQL extends \core\DB
 		}
 
 		$result = $stmt->fetchAll( \PDO::FETCH_ASSOC );
-		
+
 		$this->lastid = $this->db->lastInsertId();
 		
 		return $result;

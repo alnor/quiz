@@ -102,7 +102,7 @@ class Registry
 	/**
 	 * 
 	 *
-	 * @param Smrt_Request request 
+	 * @param Request request 
 
 	 * @return 
 	 * @static

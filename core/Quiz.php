@@ -27,6 +27,12 @@ abstract class Quiz
 	 * @access protected
 	 */
 	protected $type;
+	
+	/**
+	 * 
+	 * @access private
+	 */
+	private $id;	
 
 	/**
 	 * 
@@ -155,8 +161,31 @@ abstract class Quiz
 		$this->db->save($params);
 		return $this->db->getLastId();
 	} // end of member function save	
+	
+	/**
+	 * 
+	 *
+	 * @param array $params 
+
+	 * @return 
+	 * @access public
+	 */
+	public function delete( ) {
+		return $this->db->delete($this->id);
+	} // end of member function save	
 
 
+	/**
+	 * 
+	 *
+	 * @param Question question 
+
+	 * @return 
+	 * @access public
+	 */
+	public function getQuiz( ) {
+		return $this->db->find($this->type);
+	} // end of member function deleteQuestion	
 
 	/**
 	 * 
@@ -167,10 +196,9 @@ abstract class Quiz
 	 * @access private
 	 */
 	private function init( $id ) {
-		$quiz = $this->db->find($id);
-		$this->text = $quiz["text"];
-		$questions = $this->db->findQuestions($id);
-		$this->setQuestions($questions);
+		$quiz = $this->db->find($this->type, $id);
+		$this->id = $id;
+		$this->text = $quiz[0]["text"];
 	} // end of member function init
 
 

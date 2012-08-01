@@ -13,18 +13,25 @@
 </head>
 
 <body>
-	<h1>QuiZ</h1>
-		
-	<hr />
-
-	<div id="ajaxContext">
-	</div>
-
-	<div class="content">
-		{content}
-	</div>
+	<div class="page">
+		<div class="header">
+			<h1>QuiZ</h1>
+		</div>
+		<div class="menu">
+			<ul>
+				<li><a href="/admin/add">Add quiz</a></li>
+				<li><a href="/admin/quiz">Quiz list</a></li>
+			</ul>
+		</div>		
 	
-	<hr />
+		<div id="ajaxContext">
+		</div>
+	
+		<div class="content">
+			{content}
+		</div>
+		
+	</div>
 
 </body>
 </html>

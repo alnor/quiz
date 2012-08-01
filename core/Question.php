@@ -39,7 +39,7 @@ class Question
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( $text,  $id = null ) {
+	public function __construct( $text = null,  $id = null ) {
 			
 		$this->driver = \core\Registry::getConnection();
 		$this->db = new \core\data\QuestionData($this->driver);
@@ -86,6 +86,20 @@ class Question
 		$this->db->save($params);
 		return $this->db->getLastId();
 	} // end of member function save
+	
+	/**
+	 * 
+	 *
+	 * @param int id 
+
+	 * @return 
+	 * @access private
+	 */
+	private function init( $id ) {
+		$quest = $this->db->find($this->type, $id);
+		$this->id = $id;
+		$this->text = $quest[0]["text"];
+	} // end of member function init	
 
 
 } // end of Question
