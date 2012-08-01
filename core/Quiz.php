@@ -60,7 +60,7 @@ abstract class Quiz
 	public function __construct( $text = null,  $id = null ) {
 		
 		$this->driver = \core\Registry::getConnection();
-		$this->db = new \core\QuizData($this->driver);
+		$this->db = new \core\data\QuizData($this->driver);
 				
 		if (!is_null($id)){
 			$this->init($id);

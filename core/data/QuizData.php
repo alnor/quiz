@@ -1,12 +1,13 @@
 <?php
 
-namespace core\data
+namespace core\data;
 
 /**
  * class QuizData
  * 
  */
-class QuizData
+
+class QuizData extends \core\DataStrategy
 {
 
   /** Aggregations: */
@@ -14,12 +15,6 @@ class QuizData
   /** Compositions: */
 
    /*** Attributes: ***/
-
-  /**
-   * 
-   * @access private
-   */
-  private $db;
 
 
   /**
@@ -43,8 +38,8 @@ class QuizData
    * @access public
    */
   public function save( $params ) {
-    $query = "INSERT INTO quiz SET text = '?')";
-    return $this->db->execute( $query, array($param['text']) );
+    $query = "INSERT INTO quiz SET text = '?'";
+    return $this->db->execute( $query, array($params['text']) );
   } // end of member function save
 
   /**

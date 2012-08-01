@@ -10,7 +10,7 @@ $(function(){
 	
 	$("#formQuiz").bind("submit", function(event){
 		$.ajax({
-			url: "/quiz/add",
+			url: "/admin/add",
 			type: "POST",
 			data: $(this).serialize(),
 			success: function(html){  

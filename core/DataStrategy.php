@@ -18,6 +18,12 @@ abstract class DataStrategy
 
   /**
    * 
+   * @access protected
+   */
+  protected $db;	
+
+  /**
+   * 
    *
    * @param array params 
 
@@ -61,7 +67,14 @@ abstract class DataStrategy
   abstract public function delete( $id );
 
 
-
+  /**
+   * 
+   * @return 
+   * @access public
+   */
+  public function getLastId( ) {
+    return $this->db->getLastId( );
+  } // end of member function getLastId
 
 
 } // end of DataStrategy

@@ -40,6 +40,10 @@ class Question
 	 * @access public
 	 */
 	public function __construct( $text,  $id = null ) {
+			
+		$this->driver = \core\Registry::getConnection();
+		$this->db = new \core\data\QuestionData($this->driver);
+				
 		if (!is_null($id)){
 			$this->init($id);
 		}
@@ -70,7 +74,18 @@ class Question
 	} // end of member function getAnswers
 
 
+	/**
+	 * 
+	 *
+	 * @param array $params 
 
+	 * @return 
+	 * @access public
+	 */
+	public function save( $params ) {
+		$this->db->save($params);
+		return $this->db->getLastId();
+	} // end of member function save
 
 
 } // end of Question

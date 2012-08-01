@@ -6,7 +6,7 @@ namespace core\db;
  * class MySQL
  * 
  */
-class MySQL extends DB
+class MySQL extends \core\DB
 {
 
 	/** Aggregations: */
@@ -52,10 +52,10 @@ class MySQL extends DB
 			echo $e->getMessage();
 			
 		}
-		
+
 		$result = $stmt->fetchAll( \PDO::FETCH_ASSOC );
 		
-		$this->lastid = $result;
+		$this->lastid = $this->db->lastInsertId();
 		
 		return $result;
 	} // end of member function execute		
