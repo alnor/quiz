@@ -61,7 +61,7 @@ class QuizData extends \core\DataStrategy
   		$cond .= " AND id=? ";
   		$values[]=$id;
   	}
-    $query = "SELECT * FROM quiz ";
+    $query = "SELECT * FROM quiz ".$cond;
     return $this->db->execute( $query, $values );  	
   } // end of member function find
 

@@ -8,8 +8,8 @@ $(function(){
 			'<option value="2">Multiply</option>' +
 		'</select> ' +
 		'Required: '+
-		'No <input type="radio" name="question[1][required]" value="0" />'+
-		'Yes <input type="radio" name="question[1][required]" value="1" />'+
+		'No <input type="radio" name="question['+count+'][required]" value="0" />'+
+		'Yes <input type="radio" name="question['+count+'][required]" value="1" />'+
 		'<div class="answerBox">' +
 			'Answer #1: <input type="text" name="answer['+count+'][1][text]" /><br />	' +	
 		'</div>' +

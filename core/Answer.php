@@ -28,6 +28,10 @@ class Answer
 	 * @access public
 	 */
 	public function __construct( $text = null,  $id = null ) {
+		
+		$this->driver = \core\Registry::getConnection();
+		$this->db = new \core\data\AnswerData($this->driver);		
+		
 		if (!is_null($id)){
 			$this->init($id);
 		}
@@ -38,7 +42,32 @@ class Answer
 	} // end of member function __construct
 
 
+	/**
+	 * 
+	 *
+	 * @param array $params 
 
+	 * @return 
+	 * @access public
+	 */
+	public function save( $params ) {
+		$this->db->save($params);
+		return $this->db->getLastId();
+	} // end of member function save
+	
+	/**
+	 * 
+	 *
+	 * @param int id 
+
+	 * @return 
+	 * @access private
+	 */
+	private function init( $id ) {
+		$ans = $this->db->find($id);
+		$this->id = $id;
+		$this->text = $ans[0]["text"];
+	} // end of member function init	
 
 
 } // end of Answer

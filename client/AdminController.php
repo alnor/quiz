@@ -56,12 +56,9 @@ class AdminController extends \core\Common
 		
 		if ($this->form){
 			
-			$this->validateQuizFields( );
-			
-			$this->validateQuestionFields( );
-			
-			$this->validateAnswerFields( );
-			
+			$this->validateQuizFields( );		
+			$this->validateQuestionFields( );		
+			$this->validateAnswerFields( );		
 			$this->validateRequiredCount( );			
 
 			if (!empty($this->error)){
@@ -71,15 +68,15 @@ class AdminController extends \core\Common
 				return;
 			}	
 			
-			$quizObj = new \core\quiz\ActiveQuiz($form["quiz"]["text"]);
-			$quizid = $quizObj->save($form["quiz"]);
+			$quizObj = new \core\quiz\ActiveQuiz($this->form["quiz"]["text"]);
+			$quizid = $quizObj->save($this->form["quiz"]);
 
-			foreach($form["question"] as $key=>$question){
+			foreach($this->form["question"] as $key=>$question){
 				$question["quiz_id"] = $quizid;
 				$questionObj = new \core\Question($question["text"]);
 				$questionid = $questionObj->save($question);
 				
-				foreach($form["answer"][$key] as $k=>$answer){
+				foreach($this->form["answer"][$key] as $k=>$answer){
 					$answer["question_id"] = $questionid;
 					$answerObj = new \core\Answer($answer["text"]);
 					$answerid = $answerObj->save($answer);					
