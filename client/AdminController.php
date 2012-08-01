@@ -87,7 +87,17 @@ class AdminController extends \core\Common
 	}
 	
 	function result(){								
+		$this->form = \core\Registry::getRequest()->form();
 		
+		if ($this->form){
+			switch($this->form["type"]){
+				case "active":
+					$quizObj = new \core\quiz\ActiveQuiz(null, $this->form["id"]);
+					break;
+			}
+			
+			$questions = $quizObj->getQuestionsCollection();
+		}		
 	}	
 	
 	function close(){

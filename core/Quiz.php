@@ -131,21 +131,21 @@ abstract class Quiz
 	 * @return 
 	 * @access public
 	 */
-	public function getQuestions( ) {
+	public function getQuestionsCollection( ) {
 		return $this->questions;
 	} // end of member function getQuestions
 
 	/**
 	 * 
-	 *
-	 * @param array _questions 
-
 	 * @return 
 	 * @access public
 	 */
-	public function setQuestion( $_questions ) {
-		foreach($_questions as $key=>$val){
-			$this->questions[] = new \core\Question($val["id"]);
+	public function setQuestions(  ) {
+		
+		//$questions = 
+		
+		foreach($questions as $key=>$val){
+			$this->questions[] = new \core\Question(null, $val["id"]);
 		}
 	} // end of member function setQuestion
 	
@@ -199,6 +199,7 @@ abstract class Quiz
 		$quiz = $this->db->find($this->type, $id);
 		$this->id = $id;
 		$this->text = $quiz[0]["text"];
+		$this->setQuestions();
 	} // end of member function init
 
 
