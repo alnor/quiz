@@ -121,6 +121,16 @@ class View
 
 		return $output;
 	} // end of member function render
+	
+	/**
+	 * 
+	 * Загружаем шаблон для представления
+	 * @return 
+	 * @access public
+	 */
+	public function redirect( $path ) {
+		header("Location: ".$path);	
+	} // end of member function loadTemplate	
 
 	/**
 	 * 

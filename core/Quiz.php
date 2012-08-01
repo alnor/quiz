@@ -177,9 +177,6 @@ abstract class Quiz
 
 	/**
 	 * 
-	 *
-	 * @param Question question 
-
 	 * @return 
 	 * @access public
 	 */

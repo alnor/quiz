@@ -81,7 +81,9 @@ class AdminController extends \core\Common
 					$answerObj = new \core\Answer($answer["text"]);
 					$answerid = $answerObj->save($answer);					
 				}
-			}			
+			}
+
+			$this->redirect("/admin/result");
 		}			
 
 	}
