@@ -36,13 +36,13 @@ abstract class DataStrategy
   /**
    * 
    *
-   * @param int id 
+   * @param array params 
 
    * @return 
    * @abstract
    * @access public
    */
-  abstract public function find( $type, $id = null );
+  abstract public function find( $params=array() );
 
   /**
    * 

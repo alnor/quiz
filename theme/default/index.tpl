@@ -32,6 +32,12 @@
 		</div>
 		
 	</div>
-
+	<div id="win">
+		<div class="wrap">
+			<a href="#" id="closeBut">Close</a>
+			<div id="win_main">
+			</div>		
+		</div>
+	</div>
 </body>
 </html>

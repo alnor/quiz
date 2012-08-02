@@ -31,13 +31,13 @@ class AdminController extends \core\Common
 
 
 	function quiz(){								
-		$activeQuizObj = new \core\quiz\ActiveQuiz();
+		$activeQuizObj = new \core\command\data\ActiveQuiz();
 		$activeQuiz = $activeQuizObj->getQuiz();
 		
-		$draftQuizObj = new \core\quiz\DraftQuiz();
+		$draftQuizObj = new \core\command\data\DraftQuiz();
 		$draftQuiz = $draftQuizObj->getQuiz();
 		
-		$closedQuizObj = new \core\quiz\ClosedQuiz();
+		$closedQuizObj = new \core\command\data\ClosedQuiz();
 		$closedQuiz = $closedQuizObj->getQuiz();		
 
 		$this->set("active", $activeQuiz);	
@@ -68,38 +68,54 @@ class AdminController extends \core\Common
 				return;
 			}	
 			
-			$quizObj = new \core\quiz\ActiveQuiz($this->form["quiz"]["text"]);
+			$quizObj = new \core\command\data\ActiveQuiz();
 			$quizid = $quizObj->save($this->form["quiz"]);
 
 			foreach($this->form["question"] as $key=>$question){
 				$question["quiz_id"] = $quizid;
-				$questionObj = new \core\Question($question["text"]);
+				$questionObj = new \core\command\QuestionData();
 				$questionid = $questionObj->save($question);
 				
 				foreach($this->form["answer"][$key] as $k=>$answer){
 					$answer["question_id"] = $questionid;
-					$answerObj = new \core\Answer($answer["text"]);
+					$answerObj = new \core\command\AnswerData();
 					$answerid = $answerObj->save($answer);					
 				}
 			}
 
-			$this->redirect("/admin/result");
+			//$this->redirect("/admin/result");
 		}			
 
 	}
 	
-	function result(){								
+	function result(){			
+		
+		$qarr=array();
+		
 		$this->form = \core\Registry::getRequest()->form();
 		
 		if ($this->form){
 			switch($this->form["type"]){
 				case "active":
-					$quizObj = new \core\quiz\ActiveQuiz(null, $this->form["id"]);
+					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
 					break;
 			}
 			
-			$questions = $quizObj->getQuestionsCollection();
+			$questionObj = new \core\command\QuestionData();
+			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
+
+			$ansObj = new \core\command\AnswerData();
+			foreach($questions as $key=>$question){
+				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
+			}
+			
+			$result = array("quiz"=>$quizObj, "data"=>$qarr);
+			
+			$this->setBlankTheme();			
+			$this->set("result", $result);
 		}		
+		
+		return false;
 	}	
 	
 	function close(){
@@ -113,7 +129,7 @@ class AdminController extends \core\Common
 		if ($form){
 			switch($form["type"]){
 				case "active":
-					$quizObj = new \core\quiz\ActiveQuiz(null, $form["id"]);
+					$quizObj = new \core\command\data\ActiveQuiz($form["id"]);
 					$quizObj->delete();
 					break;
 			}

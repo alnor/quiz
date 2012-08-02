@@ -1,12 +1,12 @@
 <?php
 
-namespace core\quiz;
+namespace core\command\data;
 
 /**
  * class ActiveQuiz
  * 
  */
-class ActiveQuiz extends \core\Quiz
+class ActiveQuiz extends \core\command\QuizData
 {
 
 	/** Aggregations: */
@@ -22,13 +22,10 @@ class ActiveQuiz extends \core\Quiz
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( $text = null,  $id = null ) {
-		parent::__construct( $text,  $id );
+	public function __construct( $id=null ) {
+		parent::__construct( $id );
 		$this->type=1;
 	} // end of member function __construct
-
-
-
 
 
 } // end of ActiveQuiz

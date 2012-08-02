@@ -1,5 +1,8 @@
 body{
 	font: 14px Arial;
+	position: relative;
+	width:100%;
+	height:100%;
 }	
 .page{
 	margin: 0 auto 0 auto;
@@ -108,3 +111,55 @@ button#addAnswer{
 .tbl td.but{
 	text-align:left;	
 }
+div.wb{
+	margin:3px 0 3px 30px;
+	width:500px;
+	overflow:hidden;
+	clear:both;	
+}
+.ansBlock{
+	float:left;
+	width:100px;
+	margin-right:10px;
+}	
+.statBlock{
+	float:left;
+	width:50px;
+	margin-right:10px;
+}	
+.dinamicWrapper{
+	float:left;
+	margin-right:10px;
+	width:200px;
+	border:1px solid gray;
+	height:20px;
+	overflow:hidden;
+}
+.dinamic{
+	background-color:maroon;
+	height:20px;
+}
+#win{
+	display:none;
+	background-color:white;
+	border: 3px solid gray;
+	border-radius: 5px;		
+	position: fixed;
+	top:20%;
+	left:33%;
+	width:600px;
+	height:500px;
+	overflow:auto;
+	z-index:100;
+	padding:10px;
+}
+.wrap{
+	width:100%;
+	/*height:100%;*/
+	position: relative;
+}
+#closeBut{
+	position: absolute;
+	top:10px;
+	right:10px;
+}	

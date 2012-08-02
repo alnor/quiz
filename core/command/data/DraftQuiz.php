@@ -1,12 +1,12 @@
 <?php
 
-namespace core\quiz;
+namespace core\command\data;
 
 /**
  * class DraftQuiz
  * 
  */
-class DraftQuiz extends \core\Quiz
+class DraftQuiz extends \core\command\QuizData
 {
 
 	/** Aggregations: */
@@ -22,8 +22,8 @@ class DraftQuiz extends \core\Quiz
 	 * @return 
 	 * @access public
 	 */
-	public function __construct( $text = null,  $id = null ) {
-		parent::__construct( $text,  $id );
+	public function __construct( $id=null ) {
+		parent::__construct( $id );
 		$this->type=2;
 	} // end of member function __construct
 

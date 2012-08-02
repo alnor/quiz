@@ -39,6 +39,26 @@ $(function(){
 		return false;
 	});
 	
+	$("#showResultsQuiz").live("click", function(event){
+		
+		var id=$(this).attr("data-id");
+		var type=$(this).closest("table").attr("data-type");
+		
+		$.ajax({
+			url: "/admin/result",
+			type: "POST",
+			data: {id: id, type: type},
+			success: function(html){  
+				$("#win").fadeIn();
+			    $("#win_main").html(html);  
+			}  
+		});
+	});	
+	
+	$("#closeBut").live("click", function(event){
+		$("#win").fadeOut();	
+	});	
+		
 	$("#closeQuiz").live("click", function(event){
 		
 		var id=$(this).attr("data-id");
