@@ -1,12 +1,12 @@
 body{
 	font: 14px Arial;
-	position: relative;
 	width:100%;
 	height:100%;
 }	
 .page{
 	margin: 0 auto 0 auto;
 	width:1004px;
+	position: relative;	
 }
 .header{
 }

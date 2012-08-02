@@ -142,7 +142,7 @@ class View
 		ob_start();
 						
 		if (!file_exists($this->tpl)){
-			throw new \core\QuizException($this->tpl);
+			throw new \Exception($this->tpl);
 		}
 		
 		require_once $this->tpl;

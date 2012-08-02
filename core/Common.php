@@ -42,7 +42,7 @@ class Common
 	 */
 	public function __call( $method, $args=array() ) {
 		if (!is_callable(array($this->view, $method))){
-			throw new \smrt\core\QuizException("No method error");
+			throw new \smrt\Exception("No method error");
 		}
 				
 		return call_user_func_array(array($this->view, $method), $args);
@@ -60,10 +60,11 @@ class Common
 		$action = \core\Registry::getParam("action");
 
 		if (!is_callable(array($this, $action))){
-			throw new \core\QuizException("err");
+			throw new \Exception("err");
 		}	
 		
 		$this->menuMaker();
+		$this->setTitle( "QuiZ: Driver" );
 		$this->$action();
 
 		return $this->view->render();

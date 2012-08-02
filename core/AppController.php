@@ -87,13 +87,13 @@ class AppController
 			$filepath = APP_PATH."/".ucfirst($request->getParam("controller"))."Controller.php";
 			
 			if (!file_exists($filepath)){
-				throw new \core\QuizException("error path");
+				throw new \Exception("error path");
 			}
 
 			require_once($filepath);
 
 			if (!class_exists($class)){
-				throw new \core\QuizException("error class");
+				throw new \Exception("error class");
 			}
 			
 			$action = $request->getParam("action");
@@ -105,7 +105,7 @@ class AppController
 			
 			print($this->invoke());
 			
-		}catch(\core\QuizException $e){
+		}catch(\Exception $e){
 
 		}
 	} // end of member function dispatch
