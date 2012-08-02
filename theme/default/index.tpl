@@ -17,11 +17,15 @@
 		<div class="header">
 			<h1>QuiZ</h1>
 		</div>
+		
+		
 		<div class="menu">
 			<ul>
-				<li><a href="/admin/add">Add quiz</a></li>
-				<li><a href="/admin/quiz">Quiz list</a></li>
-			</ul>
+				<?php foreach ($this->var["menu"] as $menu) { ?>
+					<li><a href="<?php echo $menu["href"]; ?>"><?php echo $menu["title"]; ?></a></li>
+				<?php } ?>
+			</ul>		
+
 		</div>		
 	
 		<div id="ajaxContext">

@@ -6,7 +6,15 @@ Options +FollowSymLinks
 IndexIgnore */*
 RewriteEngine on
 
+
+
 #RewriteBase /
-RewriteRule ^([^.]+)/([^.]+)/([^.]+)/([^.]+)$ /index.php?controller=$1&action=$2&$3=$4 [L]
-RewriteRule ^([^.]+)/([^.]+)?$ /index.php?controller=$1&action=$2 [L]
-RewriteRule ^([^.]+)?$ /index.php?controller=main&action=$1 [L]
+#RewriteRule ^/$ /index.php?controller=main&action=index [L]
+RewriteRule ^([^.]+)/([^.]+)/([^.]+)/([^.]+)/?$ /index.php?controller=$1&action=$2&$3=$4 [L]
+RewriteRule ^([^.]+)/([^.]+)/?$ /index.php?controller=$1&action=$2 [L]
+RewriteRule ^([^.]+)/?$ /index.php?controller=main&action=$1 [L]
+
+
+#RewriteCond %{REQUEST_FILENAME} !-f 
+#RewriteCond %{REQUEST_URI} !(.*)/$ 
+#RewriteRule ^(.*)$ /$1/ [R=301,L]

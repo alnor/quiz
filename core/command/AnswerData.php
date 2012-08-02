@@ -90,7 +90,30 @@ class AnswerData extends \core\DataStrategy
    * @return 
    * @access public
    */
-  public function update( $params ) {
+  public function update( $cond, $params ) {	
+  	
+  	$query = "UPDATE answers SET ";
+
+    if (!empty($params)){
+    	$conditions = array();
+  		foreach($params as $key=>$value){
+  			$conditions[] = $key."=?";
+  		}
+  		$query.= join(", ", $conditions);
+  		$values = array_values($params);
+  	}    	
+  	
+    if (!empty($cond)){
+  		$query .= " WHERE ";
+  		$conditions = array();
+  		foreach($cond as $key=>$value){
+  			$conditions[] = $key."=?";
+  		}
+  		$query.= join(" AND ", $conditions);
+  		$values = array_merge($values, array_values($cond));
+  	}  	
+
+  	return $this->db->execute( $query, $values ); 
   } // end of member function update
 
   /**

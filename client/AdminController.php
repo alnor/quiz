@@ -21,13 +21,7 @@ class AdminController extends \core\Common
 	 * 
 	 * @access private
 	 */
-	private $error=array();	
-	
-	/**
-	 * 
-	 * @access private
-	 */
-	private $form=array();	
+	private $error=array();		
 
 
 	function quiz(){								
@@ -38,7 +32,13 @@ class AdminController extends \core\Common
 		$draftQuiz = $draftQuizObj->getQuiz();
 		
 		$closedQuizObj = new \core\command\data\ClosedQuiz();
-		$closedQuiz = $closedQuizObj->getQuiz();		
+		$closedQuiz = $closedQuizObj->getQuiz();
+
+		if (!empty($activeQuiz)){
+			$this->set("has_active", 1);
+		} else {
+			$this->set("has_active", 0);
+		}
 
 		$this->set("active", $activeQuiz);	
 		$this->set("draft", $draftQuiz);	
@@ -99,6 +99,12 @@ class AdminController extends \core\Common
 				case "active":
 					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
 					break;
+				case "draft":
+					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+					break;
+				case "closed":
+					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
+					break;										
 			}
 			
 			$questionObj = new \core\command\QuestionData();
@@ -119,9 +125,46 @@ class AdminController extends \core\Common
 	}	
 	
 	function close(){
-		$form = \core\Registry::getRequest()->form();						
+		
+		$this->form = \core\Registry::getRequest()->form();
+		
+		switch($this->form["type"]){
+			case "active":
+				$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
+				break;
+			case "draft":
+				$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+				break;
+			case "closed":
+				$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
+				break;										
+		}		
+
+		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>3));
+		
 		print("Quiz successfully closed");
 	}	
+	
+	function activate(){
+		
+		$this->form = \core\Registry::getRequest()->form();
+		
+		switch($this->form["type"]){
+			case "active":
+				$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
+				break;
+			case "draft":
+				$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+				break;
+			case "closed":
+				$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
+				break;										
+		}		
+
+		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>1));
+		
+		print("Quiz successfully activate");
+	}		
 	
 	function delete(){
 		$form = \core\Registry::getRequest()->form();	
@@ -177,6 +220,10 @@ class AdminController extends \core\Common
 		
 		$requiredCount = 0;
 		
+		if (empty($this->form["question"])){
+			return;
+		}
+		
 		foreach($this->form["question"] as $key=>$question){
 			if ($question["required"]){
 				$requiredCount++;
@@ -188,6 +235,23 @@ class AdminController extends \core\Common
 		}		
 	}		
 	
+	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function menuMaker( ) {
+		
+		$menu = array(	array("title"=>"Main", "href"=>"/"),
+						array("title"=>"Add quiz", "href"=>"/admin/add"),
+						array("title"=>"Quiz list", "href"=>"/admin/quiz")
+					);
+					
+		$this->set("menu", $menu);
+		
+	} // end of member function menuMaker	
 					
 } // end of AdminController
 ?>

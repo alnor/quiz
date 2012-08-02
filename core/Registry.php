@@ -93,8 +93,8 @@ class Registry
 	 * @access public
 	 */
 	private static function setConnection( ) {
-		$db_config = \core\DBConfig::get();
-		$factory = new \core\DBStrategy($db_config);
+		require_once 'config/database.ini.php';
+		$factory = new \core\DBStrategy($db);
 		self::$connection= $factory->get();
 
 	} // end of member function getConnection

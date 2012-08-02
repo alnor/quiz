@@ -87,5 +87,20 @@ $(function(){
 			    $("#ajaxContext").html(html);  
 			}  
 		});
-	});		
+	});	
+	
+	$("#activateQuiz").live("click", function(event){
+		
+		var id=$(this).attr("data-id");
+		var type=$(this).closest("table").attr("data-type");
+		
+		$.ajax({
+			url: "/admin/activate",
+			type: "POST",
+			data: {id: id, type: type},
+			success: function(html){  
+			    $("#ajaxContext").html(html);  
+			}  
+		});
+	});	
 });

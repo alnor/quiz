@@ -22,6 +22,10 @@ class MainController extends \core\Common
 	 * @access private
 	 */
 	private $error=array();	
+	
+	function index(){	
+		echo 11;
+	}
 
 
 	function startQuiz(){								
@@ -44,7 +48,37 @@ class MainController extends \core\Common
 		$this->set("result", $result);
 
 	}
+	
+	function make(){								
+		
+		$this->form = \core\Registry::getRequest()->form();
+		
+		if ($this->form){
+			$quizObj = new \core\command\data\ActiveQuiz($this->form["quiz"]);
+			$quizObj->update(array("id"=>$this->form["quiz"]), array("count"=>$quizObj->getCount()+1));
+			
+			foreach($this->form["ans"] as $questionId=>$value){
+				$ansObj = new \core\command\AnswerData($value);
+				$ansObj->update(array("id"=>$value), array("count"=>$ansObj->getCount()+1));
+			}
+		}
+		$this->setView("/admin/result", false);
+	}	
 
 	
+	/**
+	 * 
+	 *
+	 * @return 
+	 * @access public
+	 */
+	public function menuMaker( ) {
+		
+		$menu = array(	array("title"=>"Start quiz", "href"=>"/startQuiz")
+					);
+					
+		$this->set("menu", $menu);
+		
+	} // end of member function menuMaker	
 } // end of MainController
 ?>

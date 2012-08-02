@@ -53,7 +53,7 @@ abstract class DataStrategy
    * @abstract
    * @access public
    */
-  abstract public function update( $params );
+  abstract public function update( $cond, $params );
 
   /**
    * 

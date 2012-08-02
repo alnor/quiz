@@ -12,8 +12,7 @@ body{
 }
 h3 {
 	padding:2px 0 2px 0;
-	margin:0 10px 0 0;
-	float:left;
+	margin:3px 0px 3px 0;
 }
 input.qn{
 	width:400px;
@@ -111,6 +110,12 @@ button#addAnswer{
 .tbl td.but{
 	text-align:left;	
 }
+div.wb_main{
+	border: 1px solid silver;
+	border-radius: 5px;	
+	padding:5px;
+	margin:2px 0 2px 0;
+}	
 div.wb{
 	margin:3px 0 3px 30px;
 	width:500px;
@@ -126,6 +131,11 @@ div.wb{
 	float:left;
 	width:50px;
 	margin-right:10px;
+}
+.inputBlock{
+	float:left;
+	width:10px;
+	margin-right:20px;	
 }	
 .dinamicWrapper{
 	float:left;

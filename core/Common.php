@@ -14,6 +14,13 @@ class Common
 	 * @access protected
 	 */
 	protected $view;
+	
+	
+	/**
+	 * 
+	 * @access protected
+	 */
+	protected $form=array();	
 		
 	/**
 	 * 
@@ -56,10 +63,12 @@ class Common
 			throw new \core\QuizException("err");
 		}	
 		
+		$this->menuMaker();
 		$this->$action();
 
 		return $this->view->render();
 	} // end of member function getView	
+		
 	
 }
 ?>
