@@ -75,7 +75,7 @@ class AppController
 			$request = new \core\Request();
 			
 			if (is_null($request->getParam("controller"))){
-				$request->setParam("controller", "quiz");
+				$request->setParam("controller", "main");
 			}
 			
 			if (is_null($request->getParam("action"))){

@@ -24,7 +24,6 @@ class MainController extends \core\Common
 	private $error=array();	
 	
 	function index(){	
-		echo 11;
 	}
 
 
@@ -34,6 +33,12 @@ class MainController extends \core\Common
 	
 		$quizObj = new \core\command\data\ActiveQuiz();
 		$quiz = $quizObj->find();
+		
+		if (!empty($quiz)){
+			$this->set("has_active", 1);
+		} else {
+			$this->set("has_active", 0);
+		}		
 		    
 		$questionObj = new \core\command\QuestionData();
 		$questions = $questionObj->find(array("quiz_id"=>$quiz[0]["id"]));
