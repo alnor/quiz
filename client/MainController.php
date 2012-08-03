@@ -16,11 +16,21 @@ class MainController extends \core\Common
 	/** Compositions: */
 
 	 /*** Attributes: ***/
-
+	
+	/**
+	 * 
+	 * Главная страница сайта.
+	 * @access public
+	 */
 	
 	function index(){	
-	}
+	}// end of member function index
 
+	/**
+	 * 
+	 * Страница прохождения опроса.
+	 * @access public
+	 */
 
 	function startQuiz(){								
 		
@@ -47,45 +57,14 @@ class MainController extends \core\Common
 	
 		$this->set("result", $result);
 
-	}
+	}// end of member function startQuiz
+			
 	
-	function result(){			
-		
-		$qarr=array();
-
-		if (empty($this->form)){
-			$this->form = \core\Registry::getRequest()->form();
-		}	
-		
-		if ($this->form){
-			switch($this->form["type"]){
-				case "active":
-					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
-					break;
-				case "draft":
-					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
-					break;
-				case "closed":
-					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
-					break;										
-			}
-			
-			$questionObj = new \core\command\QuestionData();
-			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
-
-			$ansObj = new \core\command\AnswerData();
-			foreach($questions as $key=>$question){
-				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
-			}
-			
-			$result = array("quiz"=>$quizObj, "data"=>$qarr);
-			
-			$this->setBlankTheme();			
-			$this->set("result", $result);
-		}		
-		
-		return false;
-	}		
+	/**
+	 * 
+	 * Обработка и сохранение результатов опроса.
+	 * @access public
+	 */
 	
 	function make(){								
 		
@@ -127,7 +106,7 @@ class MainController extends \core\Common
 			
 		}
 
-	}	
+	}// end of member function make	
 
 	
 	/**
@@ -144,5 +123,6 @@ class MainController extends \core\Common
 		$this->set("menu", $menu);
 		
 	} // end of member function menuMaker	
+	
 } // end of MainController
 ?>

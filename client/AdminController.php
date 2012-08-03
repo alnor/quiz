@@ -20,9 +20,16 @@ class AdminController extends \core\Common
 	function index(){
 		echo 11;
 	}
+	
+	/**
+	 * Опросы
+	 * Список опросов по группам
+	 * @access public
+	 */
 
 
-	function quiz(){								
+	function quiz(){	
+									
 		$activeQuizObj = new \core\command\data\ActiveQuiz();
 		$activeQuiz = $activeQuizObj->getQuiz();
 		
@@ -41,11 +48,13 @@ class AdminController extends \core\Common
 		$this->set("active", $activeQuiz);	
 		$this->set("draft", $draftQuiz);	
 		$this->set("closed", $closedQuiz);
-	}
+		
+	} // end of member function quiz	
 	
 	/**
 	 * 
-	 * Adding quiz
+	 * Страница добавления опроса.
+	 * @access public
 	 */
 	
 	function add(){	
@@ -99,7 +108,13 @@ class AdminController extends \core\Common
 			$this->result();
 		}			
 
-	}
+	} // end of member function add	
+	
+	/**
+	 * 
+	 * Страница редактирования опроса, с вопросами и ответами
+	 * @access public
+	 */
 	
 	function edit(){
 		
@@ -122,7 +137,13 @@ class AdminController extends \core\Common
 			$this->set("result", $result);		
 			$this->set("type", $this->form["type"]);	
 		}
-	}
+	} // end of member function edit	
+	
+	/**
+	 * Апдейт
+	 * Процесс изменения данных опроса.
+	 * @access public
+	 */
 	
 	function doEdit(){
 		
@@ -176,45 +197,14 @@ class AdminController extends \core\Common
 			$this->setView("quiz", false);
 			$this->quiz();			
 		}
-	}	
+	} // end of member function doEdit		
+
 	
-	function result(){			
-		
-		$qarr=array();
-
-		if (empty($this->form)){
-			$this->form = \core\Registry::getRequest()->form();
-		}	
-		
-		if ($this->form){
-			switch($this->form["type"]){
-				case "active":
-					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
-					break;
-				case "draft":
-					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
-					break;
-				case "closed":
-					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
-					break;										
-			}
-			
-			$questionObj = new \core\command\QuestionData();
-			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
-
-			$ansObj = new \core\command\AnswerData();
-			foreach($questions as $key=>$question){
-				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
-			}
-			
-			$result = array("quiz"=>$quizObj, "data"=>$qarr);
-			
-			$this->setBlankTheme();			
-			$this->set("result", $result);
-		}		
-		
-		return false;
-	}	
+	/**
+	 * 
+	 * Процесс закрытия опроса.
+	 * @access public
+	 */
 	
 	function close(){
 		
@@ -237,7 +227,13 @@ class AdminController extends \core\Common
 		$this->setBlankTheme();	
 		$this->setView("quiz", false);
 		$this->quiz();
-	}	
+	} // end of member function close		
+	
+	/**
+	 * 
+	 * Процесс активации запроса.
+	 * @access public
+	 */
 	
 	function activate(){
 		
@@ -260,7 +256,13 @@ class AdminController extends \core\Common
 		$this->setBlankTheme();	
 		$this->setView("quiz", false);
 		$this->quiz();
-	}		
+	} // end of member function activate			
+	
+	/**
+	 * 
+	 * Процесс удаления запроса.
+	 * @access public
+	 */
 	
 	function delete(){
 		$form = \core\Registry::getRequest()->form();	
@@ -286,13 +288,25 @@ class AdminController extends \core\Common
 		$this->setView("quiz", false);
 		$this->quiz();
 
-	}	
+	} // end of member function delete	
+	
+	/**
+	 * 
+	 * Валидация полей опроса
+	 * @access private
+	 */
 	
 	private function validateQuizFields( ){
 		if (!$this->form["quiz"]["text"]){
 			$this->error[] = "Quiz name needed";
 		}		
-	}
+	} // end of member function validateQuizFields
+	
+	/**
+	 * 
+	 * Валидация полей вопросов
+	 * @access private
+	 */
 	
 	private function validateQuestionFields( ){
 				
@@ -306,7 +320,13 @@ class AdminController extends \core\Common
 			$this->error[] = "Question name needed";	
 		}		
 			
-	}	
+	} // end of member function validateQuestionFields	
+	
+	/**
+	 * 
+	 * Валидация полей ответов.
+	 * @access private
+	 */
 	
 	private function validateAnswerFields( ){
 				
@@ -322,7 +342,13 @@ class AdminController extends \core\Common
 			}						
 			
 		}		
-	}	
+	} // end of member function validateAnswerFields	
+	
+	/**
+	 * 
+	 * Проверка на существование хотя бы одного обязательного вопроса.
+	 * @access private
+	 */
 	
 	private function validateRequiredCount( ){
 		
@@ -341,13 +367,12 @@ class AdminController extends \core\Common
 		if ($requiredCount==0){
 			$this->error[] = "In quiz must be at least 1 required question";	
 		}		
-	}		
+	} // end of member function validateRequiredCount		
 	
 	
 	/**
 	 * 
-	 *
-	 * @return 
+	 * Создание меню в разделе.
 	 * @access public
 	 */
 	public function menuMaker( ) {

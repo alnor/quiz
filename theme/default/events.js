@@ -35,7 +35,7 @@ $(function(){
 				if (html.search('<div class="error">')!=-1){
 					$("#ajaxContext").html(html);
 				} else {
-					$("#ajaxContext").html("<div class='message'>Quiz successfuly created!</div>").fader(); 
+					$("#ajaxContext").html("<div class='message'>Quiz successfully created!</div>").fader(); 
 					$(".content").html(html);
 				}
 			      
@@ -73,7 +73,7 @@ $(function(){
 				if (html.search('<div class="error">')!=-1){
 					$("#ajaxContext").html(html);
 				} else {
-					$("#ajaxContext").empty();
+					$("#ajaxContext").html("<div class='message'>Quiz successfully updated!</div>").fader(); 
 					$(".content").html(html);
 				}
 			      
@@ -113,7 +113,7 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html("<div class='message'>Quiz successfuly closed!</div>").fader(); 
+			    $("#ajaxContext").html("<div class='message'>Quiz successfully closed!</div>").fader(); 
 			    $(".content").html(html);
 			}  
 		});
@@ -129,7 +129,7 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html("<div class='message'>Quiz successfuly deleted!</div>").fader();   
+			    $("#ajaxContext").html("<div class='message'>Quiz successfully deleted!</div>").fader();   
 			    $(".content").html(html); 
 			}  
 		});
@@ -145,7 +145,7 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-			    $("#ajaxContext").html("<div class='message'>Quiz successfuly activated!</div>").fader();  
+			    $("#ajaxContext").html("<div class='message'>Quiz successfully activated!</div>").fader();  
 			    $(".content").html(html);
 			}  
 		});
