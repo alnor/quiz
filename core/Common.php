@@ -49,7 +49,7 @@ class Common
 	 */
 	public function __call( $method, $args=array() ) {
 		if (!is_callable(array($this->view, $method))){
-			throw new \smrt\Exception("No method error");
+			throw new \Exception("No method error");
 		}
 				
 		return call_user_func_array(array($this->view, $method), $args);

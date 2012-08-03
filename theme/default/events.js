@@ -64,6 +64,25 @@ $(function(){
 		return false;
 	});	
 	
+	$("#quizEdit").live("submit", function(event){
+		$.ajax({
+			url: "/admin/doEdit",
+			type: "POST",
+			data: $(this).serialize(),
+			success: function(html){  
+				if (html.search('<div class="error">')!=-1){
+					$("#ajaxContext").html(html);
+				} else {
+					$("#ajaxContext").empty();
+					$(".content").html(html);
+				}
+			      
+			}  
+		});
+		
+		return false;
+	});		
+	
 	$("#showResultsQuiz").live("click", function(event){
 		
 		var id=$(this).attr("data-id");

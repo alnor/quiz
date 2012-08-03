@@ -16,6 +16,10 @@ class AdminController extends \core\Common
 	/** Compositions: */
 
 	 /*** Attributes: ***/	
+	
+	function index(){
+		echo 11;
+	}
 
 
 	function quiz(){								
@@ -98,7 +102,6 @@ class AdminController extends \core\Common
 	}
 	
 	function edit(){
-		//$id = \core\Registry::getRequest()->getParam("id");
 		
 		$this->form = \core\Registry::getRequest()->form();
 		
@@ -116,9 +119,64 @@ class AdminController extends \core\Common
 			$result = array("quiz"=>$quizObj, "data"=>$qarr);	
 
 			$this->setBlankTheme();			
-			$this->set("result", $result);			
+			$this->set("result", $result);		
+			$this->set("type", $this->form["type"]);	
 		}
 	}
+	
+	function doEdit(){
+		
+		$this->form = \core\Registry::getRequest()->form();
+		
+		if ($this->form){
+			$this->validateQuizFields( );		
+			$this->validateQuestionFields( );		
+			$this->validateAnswerFields( );		
+			$this->validateRequiredCount( );			
+
+			if (!empty($this->error)){
+				$this->setView("error", false);
+				$this->setBlankTheme();
+				$this->set("error", $this->error);
+				return;
+			}		
+
+			switch($this->form["quiz"]["type"]){
+				case "active":
+					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
+					break;
+				case "draft":
+					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
+					break;
+				case "closed":
+					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
+					break;										
+			}
+			
+			$quizObj->update(array("id"=>$this->form["quiz"]["id"]), array("text"=>$this->form["quiz"]["text"]));
+
+			foreach($this->form["question"] as $key=>$question){
+				
+				$question["quiz_id"] = $quizid;
+				
+				if (!$question["required"]){
+					$question["required"]=0;
+				}
+
+				$questionObj = new \core\command\QuestionData();
+				$questionObj->update(array("id"=>$question["id"]), array("text"=>$question["text"], "type"=>$question["type"], "required"=>$question["required"]));
+
+				foreach($this->form["answer"][$key] as $k=>$answer){
+					$answerObj = new \core\command\AnswerData();
+					$answerObj->update(array("id"=>$answer["id"]), array("text"=>$answer["text"]));					
+				}
+			}
+			
+			$this->setBlankTheme();
+			$this->setView("quiz", false);
+			$this->quiz();			
+		}
+	}	
 	
 	function result(){			
 		
