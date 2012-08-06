@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.3.10deb1
+-- version 3.4.5deb1
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Авг 01 2012 г., 21:11
+-- Время создания: Авг 06 2012 г., 11:12
 -- Версия сервера: 5.1.61
--- Версия PHP: 5.3.5-1ubuntu7.7
+-- Версия PHP: 5.3.6-13ubuntu3.6
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,17 +33,7 @@ CREATE TABLE IF NOT EXISTS `answers` (
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Дамп данных таблицы `answers`
---
-
-INSERT INTO `answers` (`id`, `question_id`, `text`, `count`) VALUES
-(1, 1, 'Я', 0),
-(2, 1, 'Борщ', 0),
-(3, 2, 'Робот', 0),
-(4, 2, 'Немощь', 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -58,15 +49,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `required` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `quiz_id` (`quiz_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Дамп данных таблицы `questions`
---
-
-INSERT INTO `questions` (`id`, `quiz_id`, `text`, `type`, `required`) VALUES
-(1, 1, 'Кто я?', 1, 1),
-(2, 1, 'Кто ты?', 1, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -80,14 +63,21 @@ CREATE TABLE IF NOT EXISTS `quiz` (
   `type` enum('1','2','3') NOT NULL DEFAULT '1',
   `count` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
--- Дамп данных таблицы `quiz`
+-- Структура таблицы `stat`
 --
 
-INSERT INTO `quiz` (`id`, `text`, `type`, `count`) VALUES
-(1, 'Опросище', '1', 0);
+CREATE TABLE IF NOT EXISTS `stat` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `answer_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `answer_id` (`answer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -104,3 +94,13 @@ ALTER TABLE `answers`
 --
 ALTER TABLE `questions`
   ADD CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `stat`
+--
+ALTER TABLE `stat`
+  ADD CONSTRAINT `stat_ibfk_1` FOREIGN KEY (`answer_id`) REFERENCES `answers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -18,7 +18,6 @@ class AdminController extends \core\Common
 	 /*** Attributes: ***/	
 	
 	function index(){
-		echo 11;
 	}
 	
 	/**
@@ -379,17 +378,29 @@ class AdminController extends \core\Common
 
 			$ansObj = new \core\command\AnswerData();
 			$_answers=join(",", array_values($this->form["answer"]));
+			
+			$filtered = array();
+			foreach($this->form["answer"] as $key=>$answer_id){
+				$ans = $ansObj->query("	SELECT t1.text as answer, t2.text as question
+										FROM answers t1
+										LEFT JOIN questions t2 ON t2.id = t1.question_id
+										WHERE t1.id =".$answer_id);
+				
+				$filtered[$ans[0]["question"]][]=$ans[0]["answer"];
+ 			}
 
 			$users=array();	
 			$_users = $ansObj->query("	SELECT user
-									FROM stat
-									WHERE answer_id IN (".$_answers.")");
+										FROM stat
+										WHERE answer_id IN (".$_answers.")");
 
 			foreach($_users as $k=>$user){
 				$users[]=$user["user"];
 			}
 			
-			array_unique($users);
+			$users = array_unique($users);
+			$total = count($users);
+
 			$users = join(",",$users);
 				
 			foreach($questions as $key=>$question){
@@ -407,9 +418,10 @@ class AdminController extends \core\Common
 			
 			$result = array("quiz"=>$quizObj, "data"=>$qarr);
 			
-			$this->setBlankTheme();		
-			$this->setView("result", false);	
+			$this->setBlankTheme();			
 			$this->set("result", $result);
+			$this->set("total", $total);
+			$this->set("filtered", $filtered);
 		}		
 		
 		return false;
