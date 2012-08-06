@@ -12,7 +12,7 @@ RewriteEngine on
 #RewriteRule ^/$ /index.php?controller=main&action=index [L]
 
 RewriteRule ^admin/?$ /admin/quiz [R=301,L]
-RewriteRule ^/?$ /startQuiz [R=301,L]
+RewriteRule ^/?$ /main/startQuiz [R=301,L]
 RewriteRule ^([^.]+)/([^.]+)/([^.]+)/([^.]+)/?$ /index.php?controller=$1&action=$2&$3=$4 [L]
 RewriteRule ^([^.]+)/([^.]+)/?$ /index.php?controller=$1&action=$2 [L]
 RewriteRule ^([^.]+)/?$ /index.php?controller=main&action=$1 [L]

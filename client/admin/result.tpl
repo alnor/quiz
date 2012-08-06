@@ -1,3 +1,6 @@
+<form method="post" id="filterResults">
+<input type="hidden" name="quiz[id]" value="<?php echo $this->var["result"]["quiz"]->getId(); ?>" />
+<input type="hidden" name="quiz[type]" value="<?php echo $this->var["result"]["quiz"]->getType(); ?>" />
 <?php 
 	echo "<h2>".$this->var["result"]["quiz"]->getText()."</h2>";
 	echo "<hr />";
@@ -10,6 +13,7 @@
 			$width = (200*$pro)/100;
 			
 			echo "<div class='wb'>";
+			echo "<div class='inputBlock'><input type='checkbox' name='answer[]' value='".$answer["id"]."' /></div>";
 			echo "<div class='ansBlock'>".$answer["text"]."</div>";
 			echo "<div class='dinamicWrapper'><div class='dinamic' style='width:".$width."px'></div></div> ";
 			echo "<div class='statBlock'>".$answer["count"]." of ".$this->var["result"]["quiz"]->getCount()."</div>";
@@ -18,3 +22,7 @@
 		echo "</div>";			
 	}
 ?>
+	<div class="buttonPlace">
+		<input type="submit" value="Filter by selected" />
+	</div>
+</form>

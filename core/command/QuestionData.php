@@ -26,12 +26,6 @@ class QuestionData extends \core\DataStrategy
 	 * 
 	 * @access protected
 	 */
-	protected $db;	
-	
-	/**
-	 * 
-	 * @access protected
-	 */
 	protected $id;	
 
 	/**
@@ -45,20 +39,6 @@ class QuestionData extends \core\DataStrategy
 	 * @access protected
 	 */
 	protected $required;		
-	
-  /**
-   *  
-   * @return 
-   * @access public
-   */
-  public function __construct( $id=null ) {
-    $this->db = \core\Registry::getConnection();
-    
-     if (!is_null($id)){
-    	$this->id =$id;
-    	$this->init();
-    }    
-  } // end of member function __construct
 
   /**
    * 
@@ -71,7 +51,9 @@ class QuestionData extends \core\DataStrategy
   public function save( $params ) {
     $query = "INSERT INTO questions SET text = ?, quiz_id=?, type=?, required=?";
     $this->db->execute( $query, array($params['text'], $params['quiz_id'], $params['type'], $params['required']) );
-    return $this->db->getLastId();    
+
+    $this->id = $this->db->getLastId();
+    $this->init();    
   } // end of member function save
 
   /**

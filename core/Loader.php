@@ -15,16 +15,15 @@ class Loader
 	 */
 	public static function loading( $class ) {
 		$path = str_replace("\\", "/", $class);
-		
+
 		if (!file_exists($path.".php")){
-			echo $path.".php", "<br />";
-			throw new \core\QuizException("error path");
+			throw new \Exception("error path");
 		}
 		
 		require_once $path.".php";
 		
 		if (!class_exists($class)){
-			throw new \core\QuizException("error class");	
+			throw new \Exception("error class");	
 		}		
 		
 	} // end of member function loading

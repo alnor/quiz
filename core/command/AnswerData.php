@@ -20,26 +20,6 @@ class AnswerData extends \core\DataStrategy
 	 * @access protected
 	 */
 	protected $type;	
-	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $db;		
-	
-  /**
-   *  
-   * @return 
-   * @access public
-   */
-  public function __construct( $id=null ) {
-    $this->db = \core\Registry::getConnection();
-    
-     if (!is_null($id)){
-    	$this->id =$id;
-    	$this->init();
-    }    
-  } // end of member function __construct
 
 
   /**
@@ -53,8 +33,11 @@ class AnswerData extends \core\DataStrategy
   public function save( $params ) {
     $query = "INSERT INTO answers SET text = ?, question_id=?";
     $this->db->execute( $query, array( $params['text'], $params['question_id'] ) );
-    return $this->db->getLastId();
+
+    $this->id = $this->db->getLastId();
+    $this->init();    
   } // end of member function save
+   
 
   /**
    * 
@@ -163,8 +146,8 @@ class AnswerData extends \core\DataStrategy
 	 * @access public
 	 */
 	public function init( ) {
-		$quiz = $this->find( array("id"=>$this->id) );
-		foreach($quiz as $key=>$val){
+		$answers = $this->find( array("id"=>$this->id) );
+		foreach($answers as $key=>$val){
 			$this->text = $val["text"];
 			$this->count = $val["count"];
 		}

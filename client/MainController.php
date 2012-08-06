@@ -74,6 +74,10 @@ class MainController extends \core\Common
 			$quizObj = new \core\command\data\ActiveQuiz($this->form["quiz"]);
 			$quizObj->update(array("id"=>$this->form["quiz"]), array("count"=>$quizObj->getCount()+1));
 			
+			$user = $quizObj->getCount()+1;
+
+			$stat = new \core\command\StatData();			
+			
 			foreach($this->form["required"] as $questionId=>$value){				
 				if ($value && !($this->form["ans"][$questionId])){
 					$this->error[] = "You need to answer the mandatory questions";
@@ -89,6 +93,8 @@ class MainController extends \core\Common
 				foreach($value as $k=>$v){
 					$ansObj = new \core\command\AnswerData($v);
 					$ansObj->update(array("id"=>$v), array("count"=>$ansObj->getCount()+1));
+
+					$stat->save(array("user"=>$user, "answer_id"=>$ansObj->getId()));
 				}
 			}
 			

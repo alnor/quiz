@@ -12,7 +12,6 @@ class AppController
 	/** Aggregations: */
 
 	/** Compositions: */
-	var $m_;
 
 	 /*** Attributes: ***/
 

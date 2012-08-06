@@ -12,8 +12,7 @@ class Request
 	/** Aggregations: */
 
 	/** Compositions: */
-	var $m_;
-
+	
 	 /*** Attributes: ***/
 
 	/**

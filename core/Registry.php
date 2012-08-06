@@ -12,7 +12,6 @@ class Registry
 	/** Aggregations: */
 
 	/** Compositions: */
-	var $m_;
 
 	 /*** Attributes: ***/
 
@@ -30,12 +29,6 @@ class Registry
 	 */
 	private static $values=array();	
 	
-	/**
-	 * 
-	 * @static
-	 * @access private
-	 */
-	private static $dsn;	
 	
 	/**
 	 * 
@@ -94,7 +87,7 @@ class Registry
 	 */
 	private static function setConnection( ) {
 		require_once 'config/database.ini.php';
-		$factory = new \core\DBStrategy($db);
+		$factory = new \core\DBFactory($db);
 		self::$connection= $factory->get();
 
 	} // end of member function getConnection
@@ -123,17 +116,6 @@ class Registry
 	public static function getRequest( ) {
 		return self::getInstance()->get("request");
 	} // end of member function getRequest
-
-	/**
-	 * 
-	 *
-	 * @return 
-	 * @static
-	 * @access public
-	 */
-	public static function getFormParam( $key ) {
-		return self::getInstance()->get("request")->getFormParam( $key );
-	} // end of member function getRequest	
 	
 	/**
 	 * 
@@ -144,7 +126,7 @@ class Registry
 	 */
 	public static function getParam( $key ) {
 		return self::getInstance()->get("request")->getParam( $key );
-	} // end of member function getRequest		
+	} // end of member function getParam		
 		
 	/**
 	 * 
@@ -172,5 +154,5 @@ class Registry
 
 
 
-} // end of Smrt_Registry
+} // end of Registry
 ?>

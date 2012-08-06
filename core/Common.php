@@ -5,7 +5,7 @@ namespace core;
  * class Common
  * 
  */
-class Common
+abstract class Common
 {
 	
 	/**

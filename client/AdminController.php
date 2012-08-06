@@ -82,7 +82,8 @@ class AdminController extends \core\Common
 				$quizObj = new \core\command\data\DraftQuiz();
 			}
 			
-			$quizid = $quizObj->save($this->form["quiz"]);
+			$quizObj->save($this->form["quiz"]);
+			$quizid = $quizObj->getId();
 
 			foreach($this->form["question"] as $key=>$question){
 				
@@ -93,12 +94,14 @@ class AdminController extends \core\Common
 				}
 
 				$questionObj = new \core\command\QuestionData();
-				$questionid = $questionObj->save($question);
+				$questionObj->save($question);
+				$questionid = $questionObj->getId();
 
 				foreach($this->form["answer"][$key] as $k=>$answer){
 					$answer["question_id"] = $questionid;
 					$answerObj = new \core\command\AnswerData();
-					$answerid = $answerObj->save($answer);					
+					$answerObj->save($answer);
+					$answerid = $answerObj->getId();
 				}
 			}
 			
@@ -138,7 +141,7 @@ class AdminController extends \core\Common
 			$this->set("type", $this->form["type"]);	
 		}
 	} // end of member function edit	
-	
+
 	/**
 	 * Апдейт
 	 * Процесс изменения данных опроса.
@@ -160,19 +163,10 @@ class AdminController extends \core\Common
 				$this->setBlankTheme();
 				$this->set("error", $this->error);
 				return;
-			}		
+			}	
 
-			switch($this->form["quiz"]["type"]){
-				case "active":
-					$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
-					break;
-				case "draft":
-					$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
-					break;
-				case "closed":
-					$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
-					break;										
-			}
+			$quizFactoryObj = new \core\QuizFactory($this->form["quiz"]["type"], $this->form["id"]);
+			$quizObj = $quizFactoryObj->get();
 			
 			$quizObj->update(array("id"=>$this->form["quiz"]["id"]), array("text"=>$this->form["quiz"]["text"]));
 
@@ -210,23 +204,16 @@ class AdminController extends \core\Common
 		
 		$this->form = \core\Registry::getRequest()->form();
 		
-		switch($this->form["type"]){
-			case "active":
-				$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
-				break;
-			case "draft":
-				$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
-				break;
-			case "closed":
-				$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
-				break;										
-		}		
-
-		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>3));
-		
-		$this->setBlankTheme();	
-		$this->setView("quiz", false);
-		$this->quiz();
+		if ($this->form){
+			$quizFactoryObj = new \core\QuizFactory($this->form["type"], $this->form["id"]);
+			$quizObj = $quizFactoryObj->get();			
+	
+			$quizObj->update(array("id"=>$this->form["id"]), array("type"=>3));
+			
+			$this->setBlankTheme();	
+			$this->setView("quiz", false);
+			$this->quiz();
+		}
 	} // end of member function close		
 	
 	/**
@@ -239,23 +226,16 @@ class AdminController extends \core\Common
 		
 		$this->form = \core\Registry::getRequest()->form();
 		
-		switch($this->form["type"]){
-			case "active":
-				$quizObj = new \core\command\data\ActiveQuiz($this->form["id"]);
-				break;
-			case "draft":
-				$quizObj = new \core\command\data\DraftQuiz($this->form["id"]);
-				break;
-			case "closed":
-				$quizObj = new \core\command\data\ClosedQuiz($this->form["id"]);
-				break;										
-		}		
-
-		$quizObj->update(array("id"=>$this->form["id"]), array("type"=>1));
-		
-		$this->setBlankTheme();	
-		$this->setView("quiz", false);
-		$this->quiz();
+		if ($this->form){
+			$quizFactoryObj = new \core\QuizFactory($this->form["type"], $this->form["id"]);
+			$quizObj = $quizFactoryObj->get();			
+	
+			$quizObj->update(array("id"=>$this->form["id"]), array("type"=>1));
+			
+			$this->setBlankTheme();	
+			$this->setView("quiz", false);
+			$this->quiz();
+		}
 	} // end of member function activate			
 	
 	/**
@@ -265,23 +245,13 @@ class AdminController extends \core\Common
 	 */
 	
 	function delete(){
-		$form = \core\Registry::getRequest()->form();	
+		$this->form = \core\Registry::getRequest()->form();	
 
-		if ($form){
-			switch($form["type"]){
-				case "active":
-					$quizObj = new \core\command\data\ActiveQuiz($form["id"]);
-					$quizObj->delete();
-					break;
-				case "draft":
-					$quizObj = new \core\command\data\DraftQuiz($form["id"]);
-					$quizObj->delete();
-					break;
-				case "closed":
-					$quizObj = new \core\command\data\ClosedQuiz($form["id"]);
-					$quizObj->delete();
-					break;										
-			}
+		if ($this->form){
+			
+			$quizFactoryObj = new \core\QuizFactory($this->form["type"], $this->form["id"]);
+			$quizObj = $quizFactoryObj->get();	
+			$quizObj->delete();		
 		}
 		
 		$this->setBlankTheme();	
@@ -384,7 +354,102 @@ class AdminController extends \core\Common
 					
 		$this->set("menu", $menu);
 		
-	} // end of member function menuMaker	
+	} // end of member function menuMaker
+
+	
+	/**
+	 * Результаты
+	 * Страница отображения результатов.
+	 * @access public
+	 */
+	
+	function filter(){			
+		
+		$qarr=array();
+
+		$this->form = \core\Registry::getRequest()->form();	
+		
+		if ($this->form){
+			
+			$quizFactoryObj = new \core\QuizFactory($this->form["quiz"]["type"], $this->form["quiz"]["id"]);
+			$quizObj = $quizFactoryObj->get();
+			
+			$questionObj = new \core\command\QuestionData();
+			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
+
+			$ansObj = new \core\command\AnswerData();
+			$_answers=join(",", array_values($this->form["answer"]));
+
+			$users=array();	
+			$_users = $ansObj->query("	SELECT user
+									FROM stat
+									WHERE answer_id IN (".$_answers.")");
+
+			foreach($_users as $k=>$user){
+				$users[]=$user["user"];
+			}
+			
+			array_unique($users);
+			$users = join(",",$users);
+				
+			foreach($questions as $key=>$question){
+
+				$answers = $ansObj->query("	SELECT t1.id, t1.text, IFNULL((SELECT count(id) as count
+																			FROM stat
+																			WHERE answer_id=t1.id AND user IN (".$users.")), 0) as count
+											FROM answers t1
+											WHERE t1.question_id=".$question["id"]."
+											");			
+
+				$qarr[] = array("question"=>$question, "answers"=>$answers);
+
+			}		
+			
+			$result = array("quiz"=>$quizObj, "data"=>$qarr);
+			
+			$this->setBlankTheme();		
+			$this->setView("result", false);	
+			$this->set("result", $result);
+		}		
+		
+		return false;
+	} // end of member function result	
+	
+	/**
+	 * Результаты
+	 * Страница отображения результатов.
+	 * @access public
+	 */
+	
+	function result(){			
+		
+		$qarr=array();
+
+		if (empty($this->form)){
+			$this->form = \core\Registry::getRequest()->form();
+		}	
+		
+		if ($this->form){
+			
+			$quizFactoryObj = new \core\QuizFactory($this->form["type"], $this->form["id"]);
+			$quizObj = $quizFactoryObj->get();			
+			
+			$questionObj = new \core\command\QuestionData();
+			$questions = $questionObj->find(array("quiz_id"=>$quizObj->getId()));
+
+			$ansObj = new \core\command\AnswerData();
+			foreach($questions as $key=>$question){
+				$qarr[] = array("question"=>$question, "answers"=>$ansObj->find(array("question_id"=>$question["id"])));
+			}
+			
+			$result = array("quiz"=>$quizObj, "data"=>$qarr);
+			
+			$this->setBlankTheme();			
+			$this->set("result", $result);
+		}		
+		
+		return false;
+	} // end of member function result	
 					
 } // end of AdminController
 ?>

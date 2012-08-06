@@ -3,10 +3,10 @@
 namespace core;
 
 /**
- * class DBStrategy
+ * class DBFactory
  * 
  */
-class DBStrategy
+class DBFactory
 {
 
 	/** Aggregations: */

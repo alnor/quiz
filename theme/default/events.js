@@ -93,12 +93,30 @@ $(function(){
 			type: "POST",
 			data: {id: id, type: type},
 			success: function(html){  
-				$("#win").fadeIn();
-			    $("#win_main").html(html);  
+				//$("#win").fadeIn();
+			    $(".content").html(html);  
 			}  
 		});
 	});	
 	
+	$("#filterResults").live("submit", function(event){
+		
+		$.ajax({
+			url: "/admin/filter",
+			type: "POST",
+			data: $(this).serialize(),
+			success: function(html){  
+				if (html.search('<div class="error">')!=-1){
+					$("#ajaxContext").html(html);
+				} else { 
+					$(".content").html(html);
+				} 
+			}  
+		});
+		
+		return false;
+	});		
+
 	$("#closeBut").live("click", function(event){
 		$("#win").fadeOut();	
 	});	

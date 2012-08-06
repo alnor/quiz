@@ -7,7 +7,7 @@ namespace core\command;
  * 
  */
 
-abstract class QuizData extends \core\DataStrategy
+class StatData extends \core\DataStrategy
 {
 
   /** Aggregations: */
@@ -15,13 +15,13 @@ abstract class QuizData extends \core\DataStrategy
   /** Compositions: */
 
    /*** Attributes: ***/
-
-
+	
+	
 	/**
 	 * 
 	 * @access protected
 	 */
-	protected $type;	
+	protected $db;	
 	
 	/**
 	 * 
@@ -29,18 +29,20 @@ abstract class QuizData extends \core\DataStrategy
 	 */
 	protected $id;	
 	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $text;
 	
-	/**
-	 * 
-	 * @access protected
-	 */
-	protected $count;	
-
+  /**
+   *  
+   * @return 
+   * @access public
+   */
+  public function __construct( $id=null ) {
+    $this->db = \core\Registry::getConnection();
+    
+    if (!is_null($id)){
+    	$this->id =$id;
+    	$this->init();
+    }
+  } // end of member function __construct
 
   /**
    * 
@@ -51,8 +53,8 @@ abstract class QuizData extends \core\DataStrategy
    * @access public
    */
   public function save( $params ) {
-    $query = "INSERT INTO quiz SET text = ?, type=?";
-    $this->db->execute( $query, array($params['text'], $this->type) );
+    $query = "INSERT INTO stat SET user = ?, answer_id=?";
+    $this->db->execute( $query, array($params['user'], $params['answer_id']) );
 
     $this->id = $this->db->getLastId();
     $this->init();
@@ -71,7 +73,7 @@ abstract class QuizData extends \core\DataStrategy
   	
   	$cond 	= array();
   	
-  	$query = "SELECT * FROM quiz";
+  	$query = "SELECT * FROM stat";
   	
   	if (!empty($params)){
   		$query .= " WHERE ";
@@ -80,10 +82,7 @@ abstract class QuizData extends \core\DataStrategy
   		}
   		$query.= join(" AND ", $cond);
   		$values = array_values($params);
-  	} else {
-  		$query .= " WHERE type=? ";
-  		$values = array($this->type);
-  	}
+  	} 
 	
     return $this->db->execute( $query, $values );  	
   } // end of member function find
@@ -98,7 +97,7 @@ abstract class QuizData extends \core\DataStrategy
    */
   public function update( $cond, $params ) {	
   	
-  	$query = "UPDATE quiz SET ";
+  	$query = "UPDATE stat SET ";
 
     if (!empty($params)){
     	$conditions = array();
@@ -128,19 +127,9 @@ abstract class QuizData extends \core\DataStrategy
 	   * @access public
 	   */
 	  public function delete( ) {
-	    $query = "DELETE FROM quiz WHERE id=?";
+	    $query = "DELETE FROM stat WHERE id=?";
 	    return $this->db->execute( $query, array($this->id) );  	
-	  } // end of member function delete
-
-
-	/**
-	 * 
-	 * @return 
-	 * @access public
-	 */
-	public function getQuiz( ) {
-		return $this->find( array("type"=>$this->type) );
-	} // end of member function deleteQuestion	
+	  } // end of member function delete	
 	
 	/**
 	 * 
@@ -156,37 +145,19 @@ abstract class QuizData extends \core\DataStrategy
 	 * @return 
 	 * @access public
 	 */
-	public function getText( ) {
-		return $this->text;
-	} // end of member function getText		
+	public function getAnswerId( ) {
+		return $this->answer_id;
+	} // end of member function getAnswerId		
 	
 	/**
 	 * 
 	 * @return 
 	 * @access public
 	 */
-	public function getType( ) {
-		switch ($this->type){
-			case 1:
-				return "active";
-				break;
-			case 2:
-				return "draft";
-				break;
-			case 3:
-				return "closed";
-				break;								
-		}
-	} // end of member function getType		
+	public function getUser( ) {
+		return $this->user;
+	} // end of member function getUser		
 	
-	/**
-	 * 
-	 * @return 
-	 * @access public
-	 */
-	public function getCount( ) {
-		return $this->count;
-	} // end of member function getCount	
 	
 	/**
 	 * 
@@ -194,10 +165,10 @@ abstract class QuizData extends \core\DataStrategy
 	 * @access public
 	 */
 	public function init( ) {
-		$quiz = $this->find( array("id"=>$this->id) );
+		$stat = $this->find( array("id"=>$this->id) );
 		foreach($quiz as $key=>$val){
-			$this->text = $val["text"];
-			$this->count = $val["count"];
+			$this->user = $val["user"];
+			$this->answer_id = $val["answer_id"];
 		}
 	} // end of member function init		
 
